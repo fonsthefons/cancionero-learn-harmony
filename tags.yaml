@@ -1,0 +1,69 @@
+# Bloques y lecciones del curso, en orden.
+
+inicio:
+  label: "0 · Empieza aquí"
+  subtags:
+    como_usar: "Cómo usar este curso"
+
+fundamentos:
+  label: "1 · Fundamentos"
+  subtags:
+    leccion_01: "Lección 1 · El teclado y la escala de C"
+    leccion_02: "Lección 2 · La escala mayor y G mayor"
+    leccion_03: "Lección 3 · Intervalos"
+    leccion_04: "Lección 4 · La tríada: mayor y menor"
+    leccion_05: "Lección 5 · Los siete acordes de C"
+    leccion_06: "Lección 6 · Primer acompañamiento: I, IV y V"
+
+inversiones:
+  label: "2 · Inversiones y conducción"
+  subtags:
+    leccion_07: "Lección 7 · Inversiones"
+    leccion_08: "Lección 8 · Conducir las voces: el camino más corto"
+    leccion_09: "Lección 9 · La progresión pop: I-V-vi-IV"
+    leccion_10: "Lección 10 · Arpegios"
+    leccion_11: "Lección 11 · La escala menor"
+    leccion_12: "Lección 12 · Progresiones en menor"
+
+funciones:
+  label: "3 · Armonía funcional"
+  subtags:
+    leccion_13: "Lección 13 · Tónica, subdominante, dominante"
+    leccion_14: "Lección 14 · Cadencias"
+    leccion_15: "Lección 15 · Leer un cancionero"
+    leccion_16: "Lección 16 · Patrones de acompañamiento"
+    leccion_17: "Lección 17 · Acordes sus y add"
+    leccion_18: "Lección 18 · Bajos con barra y líneas de bajo"
+    leccion_19: "Lección 19 · Dominantes secundarias"
+    leccion_20: "Lección 20 · Préstamos del modo menor"
+
+septimas:
+  label: "4 · Acordes de séptima"
+  subtags:
+    leccion_21: "Lección 21 · Los tipos de séptima"
+    leccion_22: "Lección 22 · La séptima de dominante"
+    leccion_23: "Lección 23 · ii-V-I con séptimas"
+    leccion_24: "Lección 24 · Voicings a dos manos"
+    leccion_25: "Lección 25 · Disminuidos y aumentados"
+    leccion_26: "Lección 26 · Sextas y novenas"
+
+clasica:
+  label: "5 · Armonía clásica"
+  subtags:
+    leccion_27: "Lección 27 · Escritura a cuatro voces"
+    leccion_28: "Lección 28 · Inversiones en la armonía clásica"
+    leccion_29: "Lección 29 · Cadencias clásicas completas"
+    leccion_30: "Lección 30 · Modular"
+    leccion_31: "Lección 31 · Armonizar una melodía"
+    leccion_32: "Lección 32 · Secuencias"
+
+todas:
+  label: "6 · Todas las tonalidades"
+  subtags:
+    leccion_33: "Lección 33 · El círculo de quintas"
+    leccion_34: "Lección 34 · Escalas de sostenidos a dos octavas"
+    leccion_35: "Lección 35 · Escalas de bemoles a dos octavas"
+    leccion_36: "Lección 36 · Escalas menores a dos octavas"
+    leccion_37: "Lección 37 · Las menores que faltan"
+    leccion_38: "Lección 38 · Arpegios en todas las tonalidades"
+    leccion_39: "Lección 39 · Repaso final: tu rutina"
