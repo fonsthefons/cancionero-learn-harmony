@@ -24,6 +24,7 @@ body {
     --muted: #666;
     --accent: #397380;
     --accent-light: #2f8ea4;
+    --done: #2e7d32;
     --chord: #1a8f8f;
     --button-bg: #fffaf1;
     --button-ink: #5f63a8;
@@ -53,6 +54,7 @@ body[data-theme="dark"] {
     --muted: #a3a3a3;
     --accent: #8cc4cf;
     --accent-light: #7fb8d0;
+    --done: #81c784;
     --chord: #5ed6cc;
     --button-bg: #2c2c31;
     --button-ink: #c3c5f0;
@@ -71,6 +73,7 @@ body[data-theme="dark"] {
         --muted: #a3a3a3;
         --accent: #8cc4cf;
         --accent-light: #7fb8d0;
+    --done: #81c784;
         --chord: #5ed6cc;
         --button-bg: #2c2c31;
         --button-ink: #c3c5f0;
@@ -620,6 +623,46 @@ body.drawer-open {
 .song-list a {
     display: block;
     padding: 5px 0;
+}
+
+/* Progress checkboxes (book.yaml progress: true, web/js/progress.js) */
+.song-list li:has(> .done-box) {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.song-list li:has(> .done-box) > a {
+    flex: 1;
+}
+
+.done-box {
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0;
+    accent-color: var(--done);
+}
+
+.index li.done > a,
+.index details.done > summary {
+    color: var(--done);
+}
+
+.done-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@media print {
+    .done-box,
+    .done-toggle {
+        display: none !important;
+    }
 }
 
 /* ============================= */
@@ -7209,7 +7252,7 @@ C,4 | A,,4 | D,4 | G,4 |
 
 <!-- This book's settings (book.yaml) for the scripts below -->
 <script>
-const BOOK = {"storagePrefix": "cancionero-learn-harmony.", "notationSetting": true, "installTip": true};
+const BOOK = {"storagePrefix": "cancionero-learn-harmony.", "notationSetting": true, "installTip": true, "progress": true};
 </script>
 <!-- Scripts from web/js/, core.js first -->
 <script>
@@ -7914,6 +7957,68 @@ window.addEventListener("afterprint", () => {
     foldedForPrint.forEach((section) => { section.open = false; });
     foldedForPrint = [];
 });
+</script>
+<script>
+// Progress checkboxes (book.yaml progress: true; this file is only added then).
+// A checkbox next to every song in the contents and a "Hecha" one at the end of
+// every song; both show the same state. Ticked songs are green in the contents,
+// and a tag or subtag turns green once every song in it is ticked.
+// Saved on this device: ids of the ticked songs, as a JSON list under "done".
+
+const doneSongs = new Set((() => {
+    try {
+        const saved = JSON.parse(prefs.get("done", "[]"));
+        return Array.isArray(saved) ? saved : [];
+    } catch {
+        return [];
+    }
+})());
+
+function progressBox(songId) {
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.className = "done-box";
+    box.dataset.song = songId;
+    box.setAttribute("aria-label", "Hecha");
+    return box;
+}
+
+function paintProgress() {
+    document.querySelectorAll(".done-box").forEach((box) => {
+        box.checked = doneSongs.has(box.dataset.song);
+    });
+    document.querySelectorAll("#index .song-list li").forEach((item) => {
+        const box = item.querySelector(".done-box");
+        item.classList.toggle("done", Boolean(box && box.checked));
+    });
+    // A section (tag, subtag, All Songs) is done when every song inside it is.
+    document.querySelectorAll("#index details").forEach((section) => {
+        const items = [...section.querySelectorAll(".song-list li")];
+        section.classList.toggle("done", items.length > 0 && items.every((li) => li.classList.contains("done")));
+    });
+}
+
+// The raw href (not link.hash, which is percent-encoded) matches the song's id.
+document.querySelectorAll('#index .song-list a[href^="#"]').forEach((link) => {
+    link.before(progressBox(link.getAttribute("href").slice(1)));
+});
+document.querySelectorAll("article.song").forEach((song) => {
+    const label = document.createElement("label");
+    label.className = "done-toggle";
+    label.append(progressBox(song.id), " Hecha");
+    song.append(label);
+});
+
+document.addEventListener("change", (event) => {
+    const box = event.target.closest(".done-box");
+    if (!box) return;
+    if (box.checked) doneSongs.add(box.dataset.song);
+    else doneSongs.delete(box.dataset.song);
+    prefs.set("done", JSON.stringify([...doneSongs]));
+    paintProgress();
+});
+
+paintProgress();
 </script>
 <script>
 // Keep what's on screen still while songs above it change height.
