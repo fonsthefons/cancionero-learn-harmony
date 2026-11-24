@@ -117,7 +117,16 @@ class Voice:
             self.tokens.append(head + "[" + "".join(self.pitch(n) for n in notes) + "]" + length)
 
     def rest(self, length=""):
-        self.tokens.append("z" + length)
+        # abcjs has no symbol for rests longer than a whole note (z8 drew "pitch is
+        # undefined"), so long rests are written as whole rests plus the remainder.
+        if not length.isdigit() or int(length) <= 4:
+            self.tokens.append("z" + length)
+            return
+        n = int(length)
+        while n > 4:
+            self.tokens.append("z4")
+            n -= 4
+        self.tokens.append(f"z{n}" if n > 1 else "z")
 
     def bar(self, end=False):
         self.state = {}
