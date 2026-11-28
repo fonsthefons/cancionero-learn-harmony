@@ -805,6 +805,13 @@ body.drawer-open {
     color: #c62828;
 }
 
+/* Two psalm lines sung to one bar of a semitono de 4 (formula.js): a red bracket on the
+   left (the pair moves right with its chords, which also sets it apart). */
+.bar-shared {
+    border-left: 2px solid #c62828;
+    padding-left: 6px;
+}
+
 /* Choruses (lines between `**` lines in the song file). Bold monospace keeps
    the same character width, so chords stay on their letters. */
 .lyric-line.bold,
@@ -880,6 +887,54 @@ body.drawer-open {
     margin-bottom: 12px;
 }
 
+.syllables-toggle {
+    margin: 0 0 12px 6px;
+}
+
+/* On/off buttons (Chords, Columns, Sílabas): a slider before the label, from aria-pressed. */
+.switch::before {
+    content: "";
+    display: inline-block;
+    width: 30px;
+    height: 18px;
+    margin-right: 6px;
+    border-radius: 9px;
+    vertical-align: middle;
+    background: radial-gradient(circle at 9px 50%, #fff 6px, transparent 7px), var(--border);
+}
+
+.switch[aria-pressed="true"]::before {
+    background: radial-gradient(circle at 21px 50%, #fff 6px, transparent 7px), var(--chord);
+}
+
+/* Still being tuned: a small tag on the button says so. */
+.syllables-toggle::after {
+    content: "experimental";
+    margin-left: 6px;
+    padding: 0 5px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    font-size: 0.7em;
+    font-weight: normal;
+    opacity: 0.7;
+    vertical-align: middle;
+}
+
+/* "Sílabas" on (formula.js): a line under each syllable where the melody changes note, 3px
+   short so syllables in a row stay apart; two lines = two notes on that syllable. Drawn in
+   the span's bottom padding, below the letters, without moving them. */
+.show-syllables .syl {
+    padding-bottom: 3px;
+    background: linear-gradient(currentColor, currentColor) left bottom / calc(100% - 3px) 2px no-repeat;
+}
+
+.show-syllables .syl2 {
+    padding-bottom: 7px;
+    background:
+        linear-gradient(currentColor, currentColor) left bottom / calc(100% - 3px) 2px no-repeat,
+        linear-gradient(currentColor, currentColor) left calc(100% - 4px) / calc(100% - 3px) 2px no-repeat;
+}
+
 .psalm-formula:not(:empty) {
     margin-bottom: 1.2em;
     padding-bottom: 0.6em;
@@ -922,6 +977,17 @@ body.drawer-open {
 
 .formula-options button[aria-pressed="true"] {
     font-weight: bold;
+}
+
+/* Fits this psalm (green) / not recommended for it (red): formula.js formulaFit */
+.formula-options button.formula-good {
+    outline: 2px solid #2e7d32;
+    outline-offset: -2px;
+}
+
+.formula-options button.formula-bad {
+    outline: 2px solid #c62828;
+    outline-offset: -2px;
 }
 
 .formula-options [hidden] {
@@ -1176,6 +1242,7 @@ body.tour-on .drawer .nav {
     .drawer,
     .controls,
     .formula-pick,
+    .syllables-toggle,
     .print-dialog {
         display: none !important;
     }
@@ -1850,13 +1917,13 @@ body.tour-on .drawer .nav {
 <h3>1. 00 · Cómo usar este curso</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -1877,13 +1944,13 @@ body.tour-on .drawer .nav {
 <h3>2. 01a · Geografía del teclado</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -1906,13 +1973,13 @@ C D E F G A B c |]" data-tab=""></div>
 <h3>3. 01b · Escala de C mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -1941,13 +2008,13 @@ z4 z4 | z4 z3 | !5!C, !4!D, !3!E, !2!F, !1!G, !3!A, !2!B, !1!C | !2!B, !3!A, !1!
 <h3>4. 01c · Tono y semitono</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -1970,13 +2037,13 @@ C2 D2 | E2 F2 | A2 B2 | B2 c2 |]" data-tab=""></div>
 <h3>5. 01d · Pulso y mano quieta</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2003,13 +2070,13 @@ V:LH clef=bass
 <h3>6. 02a · La fórmula de la escala mayor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2032,13 +2099,13 @@ G A B c d e f g |]" data-tab=""></div>
 <h3>7. 02b · Escala de G mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2067,13 +2134,13 @@ z4 z4 | z4 z3 | !5!G, !4!A, !3!B, !2!C !1!D !3!E !2!F !1!G | !2!F !3!E !1!D !2!C
 <h3>8. 02c · Escala de C mayor, movimiento contrario (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2102,13 +2169,13 @@ V:LH clef=bass
 <h3>9. 02d · Escala de C mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2137,13 +2204,13 @@ V:LH clef=bass
 <h3>10. 03a · Contar intervalos</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2167,13 +2234,13 @@ C A [CA]2 | C B [CB]2 | C c [Cc]2 |]" data-tab=""></div>
 <h3>11. 03b · Terceras mayores y menores</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2196,13 +2263,13 @@ K:C clef=treble
 <h3>12. 03c · Escala de G mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2231,13 +2298,13 @@ V:LH clef=bass
 <h3>13. 03d · Quintas en la mano izquierda</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2260,13 +2327,13 @@ K:C clef=bass
 <h3>14. 04a · El acorde mayor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2290,13 +2357,13 @@ K:C clef=treble
 <h3>15. 04b · El acorde menor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2320,13 +2387,13 @@ K:C clef=treble
 <h3>16. 04c · Escala de F mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2355,13 +2422,13 @@ z4 z4 | z4 z3 | !5!F, !4!G, !3!A, !2!B, !1!C !3!D !2!E !1!F | !2!E !3!D !1!C !2!
 <h3>17. 04d · Acordes con la mano izquierda</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2385,13 +2452,13 @@ K:C clef=bass
 <h3>18. 05a · Un acorde sobre cada nota</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2415,13 +2482,13 @@ K:C clef=treble
 <h3>19. 05b · Números romanos</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2445,13 +2512,13 @@ K:G clef=treble
 <h3>20. 05c · El acorde disminuido y el aumentado</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2475,13 +2542,13 @@ K:C clef=treble
 <h3>21. 05d · Escala de F mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2510,13 +2577,13 @@ V:LH clef=bass
 <h3>22. 06a · Los acordes primarios</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2544,13 +2611,13 @@ C,4 | F,4 | G,4 | C,4 |]" data-tab=""></div>
 <h3>23. 06b · Ritmo de negras</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2581,13 +2648,13 @@ C,4 | C,4 | F,4 | F,4 |
 <h3>24. 06c · Oda a la alegría</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2616,13 +2683,13 @@ V:LH clef=bass
 <h3>25. 06d · Escala de D mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2651,13 +2718,13 @@ z4 z4 | z4 z3 | !5!D, !4!E, !3!F, !2!G, !1!A, !3!B, !2!C !1!D | !2!C !3!B, !1!A,
 <h3>26. 07a · Las tres posiciones de C</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2681,13 +2748,13 @@ K:C clef=treble
 <h3>27. 07b · Subir por inversiones</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2712,13 +2779,13 @@ K:C clef=treble
 <h3>28. 07c · Escala de D mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2747,13 +2814,13 @@ V:LH clef=bass
 <h3>29. 08a · La regla de la nota común</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2781,13 +2848,13 @@ C,4 | F,4 | G,4 | C,4 |]" data-tab=""></div>
 <h3>30. 08b · I-IV-V-I en G</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2815,13 +2882,13 @@ G,,4 | C,4 | D,4 | G,4 |]" data-tab=""></div>
 <h3>31. 08c · I-IV-V-I en F</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2849,13 +2916,13 @@ F,4 | B,,4 | C,4 | F,4 |]" data-tab=""></div>
 <h3>32. 08d · Escala de A mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2884,13 +2951,13 @@ z4 z4 | z4 z3 | !5!A, !4!B, !3!C !2!D !1!E !3!F !2!G !1!A | !2!G !3!F !1!E !2!D 
 <h3>33. 09a · I-V-vi-IV en C</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2918,13 +2985,13 @@ C,4 | G,,4 | A,,4 | F,,4 |]" data-tab=""></div>
 <h3>34. 09b · Bajo 1-5-8-5</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2952,13 +3019,13 @@ C, G, C G, | G,, D, G, D, | A,, E, A, E, | F,, C, F, C, |]" data-tab=""></div>
 <h3>35. 09c · En G y en D</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -2986,13 +3053,13 @@ G,, D, G, D, | D, A, D A, | E, B, E B, | C, G, C G, |]" data-tab=""></div>
 <h3>36. 09d · Escala de A mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3021,13 +3088,13 @@ V:LH clef=bass
 <h3>37. 10a · Arpegio de C (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3054,13 +3121,13 @@ V:LH clef=bass
 <h3>38. 10b · Arpegio de G (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3087,13 +3154,13 @@ V:LH clef=bass
 <h3>39. 10c · Arpegio de Am (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3120,13 +3187,13 @@ V:LH clef=bass
 <h3>40. 10d · Escala de E mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3155,13 +3222,13 @@ z4 z4 | z4 z3 | !5!E, !4!F, !3!G, !2!A, !1!B, !3!C !2!D !1!E | !2!D !3!C !1!B, !
 <h3>41. 11a · Escala de A menor natural, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3190,13 +3257,13 @@ z4 z4 | z4 z3 | !5!A, !4!B, !3!C !2!D !1!E !3!F !2!G !1!A | !2!G !3!F !1!E !2!D 
 <h3>42. 11b · Escala de A menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3226,13 +3293,13 @@ z4 z4 | z4 z3 | !5!A, !4!B, !3!C !2!D !1!E !3!F !2!^G !1!A | !2!^G !3!F !1!E !2!
 <h3>43. 11c · Escala de A menor melódica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3262,13 +3329,13 @@ z4 z4 | z4 z3 | !5!A, !4!B, !3!C !2!D !1!E !3!^F !2!^G !1!A | !2!G !3!F !1!E !2!
 <h3>44. 11d · Escala de E mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3297,13 +3364,13 @@ V:LH clef=bass
 <h3>45. 12a · Los acordes de A menor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3327,13 +3394,13 @@ K:Am clef=treble
 <h3>46. 12b · i-iv-V-i</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3361,13 +3428,13 @@ A,,4 | D,4 | E,4 | A,,4 |]" data-tab=""></div>
 <h3>47. 12c · La cadencia andaluza</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3395,13 +3462,13 @@ A,, E, A, E, | _G,, _D, _G, D, | _F,, _C, _F, C, | E,, B,, E, B,, |]" data-tab="
 <h3>48. 12d · Escala de A menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3431,13 +3498,13 @@ V:LH clef=bass
 <h3>49. 13a · Tres familias de acordes</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3461,13 +3528,13 @@ K:C clef=treble
 <h3>50. 13b · I-vi-ii-V</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3498,13 +3565,13 @@ C,4 | A,,4 | D,4 | G,4 |
 <h3>51. 13c · ii-V-I</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3532,13 +3599,13 @@ D,4 | G,4 | C,4 | C,4 |]" data-tab=""></div>
 <h3>52. 13d · Escala de E menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3568,13 +3635,13 @@ z4 z4 | z4 z3 | !5!E, !4!F, !3!G, !2!A, !1!B, !3!C !2!^D !1!E | !2!^D !3!C !1!B,
 <h3>53. 14a · Cadencia auténtica: V-I</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3602,13 +3669,13 @@ C,4 | F,4 | G,4 | C,4 |]" data-tab=""></div>
 <h3>54. 14b · Cadencia plagal: IV-I</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3639,13 +3706,13 @@ F,4 | B,,4 | F,,4 | B,,4 |
 <h3>55. 14c · Semicadencia y cadencia rota</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3676,13 +3743,13 @@ C,4 | D,4 | G,4 | G,4 |
 <h3>56. 14d · Escala de E menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3712,13 +3779,13 @@ V:LH clef=bass
 <h3>57. 15a · Acordes sobre la letra</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3736,13 +3803,13 @@ V:LH clef=bass
 <h3>58. 15b · Encontrar la tonalidad</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3766,13 +3833,13 @@ K:D clef=treble
 <h3>59. 15c · Transportar con números</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3791,13 +3858,13 @@ K:D clef=treble
 <h3>60. 15d · Escala de B mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3826,13 +3893,13 @@ z4 z4 | z4 z3 | !4!B, !3!C !2!D !1!E !4!F !3!G !2!A !1!B | !2!A !3!G !4!F !1!E !
 <h3>61. 16a · Balada</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3860,13 +3927,13 @@ C, G, C E | A,, E, A, C | F,, C, F, A, | G,, D, G, B, |]" data-tab=""></div>
 <h3>62. 16b · Vals en 3/4</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3895,13 +3962,13 @@ F,3 | B,,3 | C,3 | F,3 |]" data-tab=""></div>
 <h3>63. 16c · Bajo Alberti</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3929,13 +3996,13 @@ C,/G,/E,/G,/ C,/G,/E,/G,/ | F,/C/A,/C/ F,/C/A,/C/ | G,/D/B,/D/ G,/D/B,/D/ | C,/G
 <h3>64. 16d · Ritmo pop 3-3-2</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -3963,13 +4030,13 @@ G,,2 G,,2 | D,2 D,2 | E,2 E,2 | C,2 C,2 |]" data-tab=""></div>
 <h3>65. 17a · sus4 y sus2</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4000,13 +4067,13 @@ C,4 | C,4 | G,,4 | G,,4 |
 <h3>66. 17b · add9</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4034,13 +4101,13 @@ C,4 | G,,4 | A,,4 | F,,4 |]" data-tab=""></div>
 <h3>67. 17c · Escala de B mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4069,13 +4136,13 @@ V:LH clef=bass
 <h3>68. 18a · Acordes con barra</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4106,13 +4173,13 @@ C,4 | E,4 | F,4 | B,,4 |
 <h3>69. 18b · Bajo que baja</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4143,13 +4210,13 @@ C,4 | B,,4 | A,,4 | G,,4 |
 <h3>70. 18c · Bajo que sube</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4180,13 +4247,13 @@ C,4 | D,4 | E,4 | F,4 |
 <h3>71. 18d · Escala de Bb mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4215,13 +4282,13 @@ z4 z4 | z4 z3 | !3!B, !2!C !1!D !4!E !3!F !2!G !1!A !3!B | !1!A !2!G !3!F !4!E !
 <h3>72. 19a · El V del V</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4249,13 +4316,13 @@ C,4 | D,4 | G,4 | C,4 |]" data-tab=""></div>
 <h3>73. 19b · V/vi, V/ii y V/IV</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4289,13 +4356,13 @@ C,4 | E,4 | A,,4 | A,,4 |
 <h3>74. 19c · Cadena de dominantes</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4326,13 +4393,13 @@ E,4 | A,,4 | D,4 | G,4 |
 <h3>75. 19d · Escala de Bb mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4361,13 +4428,13 @@ V:LH clef=bass
 <h3>76. 20a · El iv menor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4395,13 +4462,13 @@ C,4 | F,4 | F,4 | C,4 |]" data-tab=""></div>
 <h3>77. 20b · bVII y bVI</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4432,13 +4499,13 @@ C,4 | _B,,4 | F,,4 | C,4 |
 <h3>78. 20c · Escala de Eb mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4467,13 +4534,13 @@ z4 z4 | z4 z3 | !3!E, !2!F, !1!G, !4!A, !3!B, !2!C !1!D !3!E | !1!D !2!C !3!B, !
 <h3>79. 21a · Cinco acordes de séptima</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4497,13 +4564,13 @@ K:C clef=treble
 <h3>80. 21b · Séptimas del tono de C</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4527,13 +4594,13 @@ K:C clef=treble
 <h3>81. 21c · Escala de Eb mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4562,13 +4629,13 @@ V:LH clef=bass
 <h3>82. 22a · El tritono resuelve</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4599,13 +4666,13 @@ C,4 | G,,4 | C,4 | F,4 |
 <h3>83. 22b · Inversiones de G7</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4636,13 +4703,13 @@ G,,4 | C,4 | B,,4 | C,4 |
 <h3>84. 22c · Escala de Ab mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4671,13 +4738,13 @@ z4 z4 | z4 z3 | !3!A, !2!B, !1!C !4!D !3!E !2!F !1!G !3!A | !1!G !2!F !3!E !4!D 
 <h3>85. 23a · Notas guía</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4705,13 +4772,13 @@ D,4 | G,4 | C,4 | C,4 |]" data-tab=""></div>
 <h3>86. 23b · ii-V-I en F y Bb</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4742,13 +4809,13 @@ G,,4 | C,4 | F,4 | F,4 |
 <h3>87. 23c · ii-V-i en menor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4776,13 +4843,13 @@ B,,4 | E,4 | A,,4 | A,,4 |]" data-tab=""></div>
 <h3>88. 23d · Escala de Ab mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4811,13 +4878,13 @@ V:LH clef=bass
 <h3>89. 24a · Raíz y séptima abajo</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4845,13 +4912,13 @@ V:LH clef=bass
 <h3>90. 24b · Turnaround con ritmo</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4879,13 +4946,13 @@ C,2 C,2 | A,,2 A,,2 | D,2 D,2 | G,2 G,2 |]" data-tab=""></div>
 <h3>91. 24c · Escala de D menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4915,13 +4982,13 @@ z4 z4 | z4 z3 | !5!D, !4!E, !3!F, !2!G, !1!A, !3!B, !2!^C !1!D | !2!^C !3!B, !1!
 <h3>92. 24d · Escala de G menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4951,13 +5018,13 @@ z4 z4 | z4 z3 | !5!G, !4!A, !3!B, !2!C !1!D !3!E !2!^F !1!G | !2!^F !3!E !1!D !2
 <h3>93. 25a · Disminuido de paso</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -4988,13 +5055,13 @@ C,4 | ^C,4 | D,4 | G,4 |
 <h3>94. 25b · viiº7 en menor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5025,13 +5092,13 @@ A,,4 | ^G,,4 | A,,4 | D,4 |
 <h3>95. 25c · Línea cromática</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5059,13 +5126,13 @@ A,,4 | A,,4 | A,,4 | A,,4 |]" data-tab=""></div>
 <h3>96. 25d · Escala de Db mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5094,13 +5161,13 @@ z4 z4 | z4 z3 | !3!D, !2!E, !1!F, !4!G, !3!A, !2!B, !1!C !3!D | !1!C !2!B, !3!A,
 <h3>97. 26a · Acordes de 6ª y 9ª</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5124,13 +5191,13 @@ K:C clef=treble
 <h3>98. 26b · Progresión con color</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5161,13 +5228,13 @@ C,4 | A,,4 | D,4 | G,4 |
 <h3>99. 26c · Escala de Db mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5196,13 +5263,13 @@ V:LH clef=bass
 <h3>100. 27a · Soprano, contralto, tenor y bajo</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5229,13 +5296,13 @@ V:LH clef=bass
 <h3>101. 27b · Las reglas principales</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5252,13 +5319,13 @@ V:LH clef=bass
 <h3>102. 27c · Escala de F# mayor, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5287,13 +5354,13 @@ z4 z4 | z4 z3 | !4!F, !3!G, !2!A, !1!B, !3!C !2!D !1!E !4!F | !1!E !2!D !3!C !1!
 <h3>103. 28a · Bajo melódico con inversiones</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5324,13 +5391,13 @@ C,4 | B,,4 | C,4 | F,4 |
 <h3>104. 28b · La 6/4 cadencial</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5361,13 +5428,13 @@ C,4 | F,4 | G,4 | G,4 |
 <h3>105. 28c · Escala de F# mayor, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5396,13 +5463,13 @@ V:LH clef=bass
 <h3>106. 29a · I-ii6-V7-I</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5430,13 +5497,13 @@ C,4 | F,4 | G,4 | C,4 |]" data-tab=""></div>
 <h3>107. 29b · Cadencia completa en G</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5467,13 +5534,13 @@ G,,4 | C,4 | D,4 | D,4 |
 <h3>108. 29c · Cadencia rota con séptima</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5504,13 +5571,13 @@ C,4 | F,4 | G,4 | A,,4 |
 <h3>109. 29d · Escala de C menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5540,13 +5607,13 @@ z4 z4 | z4 z3 | !5!C, !4!D, !3!E, !2!F, !1!G, !3!A, !2!=B, !1!C | !2!=B, !3!A, !
 <h3>110. 29e · Escala de F menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5576,13 +5643,13 @@ z4 z4 | z4 z3 | !5!F, !4!G, !3!A, !2!B, !1!C !3!D !2!=E !1!F | !2!=E !3!D !1!C !
 <h3>111. 30a · A la dominante</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5613,13 +5680,13 @@ C,4 | A,,4 | D,4 | G,4 |
 <h3>112. 30b · A la relativa menor</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5650,13 +5717,13 @@ C,4 | F,4 | E,4 | A,,4 |
 <h3>113. 30c · Escala de B menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5686,13 +5753,13 @@ z4 z4 | z4 z3 | !4!B, !3!C !2!D !1!E !4!F !3!G !2!^A !1!B | !2!^A !3!G !4!F !1!E
 <h3>114. 30d · Escala de F# menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5722,13 +5789,13 @@ z4 z4 | z4 z3 | !4!F, !3!G, !2!A, !1!B, !3!C !2!D !1!^E !4!F | !1!^E !2!D !3!C !
 <h3>115. 31a · Cómo elegir los acordes</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5752,13 +5819,13 @@ E E F G | G F E D | C C D E | D3/2 C/ C2 |]" data-tab=""></div>
 <h3>116. 31b · Noche de paz</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5791,13 +5858,13 @@ V:LH clef=bass
 <h3>117. 31c · Tu armonización</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5824,13 +5891,13 @@ d2 d f3/2 d/ B | c3 e3 | c3/2 G/ E G3/2 F/ D | C6 |]" data-tab=""></div>
 <h3>118. 32a · Círculo de quintas en el tono</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5861,13 +5928,13 @@ C,4 | F,4 | B,,4 | E,4 |
 <h3>119. 32b · Con séptimas</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5898,13 +5965,13 @@ C,4 | F,4 | B,,4 | E,4 |
 <h3>120. 32c · El canon de Pachelbel</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5935,13 +6002,13 @@ C, G, C E | G,, D, G, B, | A,, E, A, C | E,, B,, E, G, |
 <h3>121. 32d · Escala de C# menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5971,13 +6038,13 @@ z4 z4 | z4 z3 | !3!C, !2!D, !1!E, !4!F, !3!G, !2!A, !1!^B, !3!C | !1!^B, !2!A, !
 <h3>122. 33a · Orden de los sostenidos y los bemoles</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -5994,13 +6061,13 @@ z4 z4 | z4 z3 | !3!C, !2!D, !1!E, !4!F, !3!G, !2!A, !1!^B, !3!C | !1!^B, !2!A, !
 <h3>123. 33b · I-IV-V-I por el círculo</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6043,13 +6110,13 @@ C,4 | F,4 | G,4 | C,4 |
 <h3>124. 33c · Escala de G# menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6079,13 +6146,13 @@ z4 z4 | z4 z3 | !3!G, !2!A, !1!B, !4!C !3!D !2!E !1!^^F !3!G | !1!^^F !2!E !3!D 
 <h3>125. 33d · Escala de Eb menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6115,13 +6182,13 @@ z4 z4 | z4 z3 | !2!E, !1!F, !4!G, !3!A, !2!B, !1!C !3!=D !2!E | !3!=D !1!C !2!B,
 <h3>126. 34a · Escala de C mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6152,13 +6219,13 @@ V:LH clef=bass
 <h3>127. 34b · Escala de G mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6189,13 +6256,13 @@ V:LH clef=bass
 <h3>128. 34c · Escala de D mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6226,13 +6293,13 @@ V:LH clef=bass
 <h3>129. 34d · Escala de A mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6263,13 +6330,13 @@ V:LH clef=bass
 <h3>130. 34e · Escala de E mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6300,13 +6367,13 @@ V:LH clef=bass
 <h3>131. 34f · Escala de B mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6337,13 +6404,13 @@ V:LH clef=bass
 <h3>132. 35a · Escala de F mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6374,13 +6441,13 @@ V:LH clef=bass
 <h3>133. 35b · Escala de Bb mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6411,13 +6478,13 @@ V:LH clef=bass
 <h3>134. 35c · Escala de Eb mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6448,13 +6515,13 @@ V:LH clef=bass
 <h3>135. 35d · Escala de Ab mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6485,13 +6552,13 @@ V:LH clef=bass
 <h3>136. 35e · Escala de Db mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6522,13 +6589,13 @@ V:LH clef=bass
 <h3>137. 35f · Escala de F# mayor, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6559,13 +6626,13 @@ V:LH clef=bass
 <h3>138. 36a · Escala de A menor armónica, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6597,13 +6664,13 @@ V:LH clef=bass
 <h3>139. 36b · Escala de E menor armónica, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6635,13 +6702,13 @@ V:LH clef=bass
 <h3>140. 36c · Escala de D menor armónica, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6673,13 +6740,13 @@ V:LH clef=bass
 <h3>141. 36d · Escala de B menor armónica, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6711,13 +6778,13 @@ V:LH clef=bass
 <h3>142. 36e · Escala de G menor armónica, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6749,13 +6816,13 @@ V:LH clef=bass
 <h3>143. 36f · Escala de A menor melódica, manos juntas (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6787,13 +6854,13 @@ V:LH clef=bass
 <h3>144. 37a · Escala de C menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6823,13 +6890,13 @@ V:LH clef=bass
 <h3>145. 37b · Escala de F menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6859,13 +6926,13 @@ V:LH clef=bass
 <h3>146. 37c · Escala de F# menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6895,13 +6962,13 @@ V:LH clef=bass
 <h3>147. 37d · Escala de C# menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6931,13 +6998,13 @@ V:LH clef=bass
 <h3>148. 37e · Escala de Bb menor armónica, manos separadas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -6967,13 +7034,13 @@ z4 z4 | z4 z3 | !2!B, !1!C !3!D !2!E !1!F !4!G !3!=A !2!B | !3!=A !4!G !1!F !2!E
 <h3>149. 37f · Escala de Bb menor armónica, manos juntas (1 octava)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7003,13 +7070,13 @@ V:LH clef=bass
 <h3>150. 38a · Arpegio de F (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7036,13 +7103,13 @@ V:LH clef=bass
 <h3>151. 38b · Arpegio de D (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7069,13 +7136,13 @@ V:LH clef=bass
 <h3>152. 38c · Arpegio de Em (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7102,13 +7169,13 @@ V:LH clef=bass
 <h3>153. 38d · Arpegio de Dm (2 octavas)</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7135,13 +7202,13 @@ V:LH clef=bass
 <h3>154. 38e · Arpegios en las demás</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7158,13 +7225,13 @@ V:LH clef=bass
 <h3>155. 39a · ii-V-I en todas las tonalidades</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7198,13 +7265,13 @@ D,4 | G,4 | C,4 | G,,4 |
 <h3>156. 39b · Todo junto</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7238,13 +7305,13 @@ C,4 | A,,4 | D,4 | G,4 |
 <h3>157. 39c · Rutina para seguir</h3>
 
 <div class="controls">
-  <button data-action="toggle-chords">Chords</button>
+  <button class="switch" data-action="toggle-chords" aria-pressed="true">Chords</button>
   <div class="stepper">
     <button data-action="transpose-down" aria-label="Transpose down">−</button>
     <button class="transpose-value" data-action="transpose-reset" aria-label="Reset transpose">0</button>
     <button data-action="transpose-up" aria-label="Transpose up">+</button>
   </div>
-  <button data-action="toggle-columns">Columns</button>
+  <button class="switch" data-action="toggle-columns" aria-pressed="false">Columns</button>
   <div class="stepper">
     <button data-action="song-text-smaller" aria-label="Smaller text">A−</button>
     <button class="song-scale-value" data-action="song-text-reset" aria-label="Reset text size">100%</button>
@@ -7445,6 +7512,18 @@ function songSetting(name, values, onGlobalChange) {
     };
 }
 
+// The words of a .lyric-line or .line-pair, as read: a pair's own lyric is
+// everything in it but its .chord-line (and a nested .lyric-line, which is a
+// line of its own). Not only its text nodes: the "Sílabas" spans (formula.js)
+// sit inside words ("corrien<span>tes</span>").
+function lyricText(line) {
+    if (!line.matches(".line-pair")) return line.textContent;
+    return [...line.childNodes]
+        .filter((node) => node.nodeType === Node.TEXT_NODE || !node.matches(".chord-line, .lyric-line"))
+        .map((node) => node.textContent)
+        .join("");
+}
+
 // Lowercase and strip accents so "Señor" matches "senor".
 function normalizeText(text) {
     return text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -7556,10 +7635,22 @@ const chordsSetting = songSetting("chords", ["show", "hide"], (value) =>
 const columnsSetting = songSetting("columns", ["1", "2"], (value) =>
     setActionLabel("toggle-all-columns", value === "2" ? "1 column" : "2 columns"));
 
-onAction("toggle-chords", (button, song) => chordsSetting.toggleSong(song));
-onAction("toggle-columns", (button, song) => columnsSetting.toggleSong(song));
-onAction("toggle-all-chords", () => chordsSetting.toggleGlobal());
-onAction("toggle-all-columns", () => columnsSetting.toggleGlobal());
+// Slider of each song's Chords/Columns button: on = chords showing / 2 columns,
+// from the song's own override or else the book-wide value.
+function syncSwitches() {
+    for (const [action, name, on] of [["toggle-chords", "chords", "show"], ["toggle-columns", "columns", "2"]]) {
+        document.querySelectorAll(`[data-action="${action}"]`).forEach((button) => {
+            const value = button.closest(".song")?.dataset[name] || document.body.dataset[name];
+            button.setAttribute("aria-pressed", value === on);
+        });
+    }
+}
+
+onAction("toggle-chords", (button, song) => { chordsSetting.toggleSong(song); syncSwitches(); });
+onAction("toggle-columns", (button, song) => { columnsSetting.toggleSong(song); syncSwitches(); });
+onAction("toggle-all-chords", () => { chordsSetting.toggleGlobal(); syncSwitches(); });
+onAction("toggle-all-columns", () => { columnsSetting.toggleGlobal(); syncSwitches(); });
+syncSwitches();
 
 // Put every song back as written: transpose 0, no per-song chords/columns.
 onAction("reset-songs", () => {
@@ -7567,6 +7658,7 @@ onAction("reset-songs", () => {
         .forEach((song) => setTranspose(song, 0));
     chordsSetting.clearSongs();
     columnsSetting.clearSongs();
+    syncSwitches();
     document.querySelectorAll(".song[data-song-scale]").forEach((song) => setSongScale(song, 1));
     songState.clearAll();
 });
@@ -8108,14 +8200,11 @@ function searchText(text) {
 
 const searchIndex = [...document.querySelectorAll(".song")].map((song) => {
     // Lyric lines only: chord lines would add noise ("am", "do"...). A lyric
-    // under a chord line is its .line-pair's own text.
+    // under a chord line is its .line-pair's own text (lyricText, core.js).
     // A psalm's fórmula (formula.js) is a copy of another song: not the psalm's words.
     const lines = [...song.querySelectorAll(".lyric-line, .line-pair")]
         .filter((line) => !line.closest(".psalm-formula"))
-        .map((line) => (line.matches(".lyric-line")
-            ? line.textContent
-            : [...line.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.data).join("")
-        ).trim())
+        .map((line) => lyricText(line).trim())
         .filter(Boolean);
     const lineText = lines.map(searchText);
     return {
@@ -8503,9 +8592,7 @@ function slideVerses(id) {
     return [...document.getElementById(id).querySelectorAll(".lyrics > .verse")].map((verse) =>
         [...verse.children].flatMap((el) => {
             if (el.classList.contains("chord-inline") || el.querySelector(".chord-inline")) return [];
-            const text = el.classList.contains("line-pair")
-                ? [...el.childNodes].filter((n) => n.nodeType === Node.TEXT_NODE).map((n) => n.textContent).join("")
-                : el.classList.contains("lyric-line") ? el.textContent : "";
+            const text = el.matches(".line-pair, .lyric-line") ? lyricText(el) : "";
             return text.trim() ? [{ text: text.trim(), bold: el.classList.contains("bold") }] : [];
         })
     ).filter((lines) => lines.length);
